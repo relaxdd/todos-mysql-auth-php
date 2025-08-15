@@ -1,0 +1,4 @@
+https://learn-php.local/
+https://learn-php.local/about
+https://learn-php.local/auth/login
+https://learn-php.local/auth/register

@@ -1,0 +1,16 @@
+RewriteEngine On
+
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+RewriteRule ^server/ - [L]
+RewriteCond %{HTTP_HOST} ^server\.osvetilo\.ru$
+RewriteCond %{DOCUMENT_ROOT}/server%{REQUEST_URI} -d
+RewriteRule [^/]$ %{REQUEST_URI}/ [R,L]
+RewriteCond %{HTTP_HOST} ^server\.osvetilo\.ru$
+RewriteRule (.*) server/$1 [L,QSA]
+
+RewriteCond %{QUERY_STRING} !path=
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ ?path=$1 [QSA,L]

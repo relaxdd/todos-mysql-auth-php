@@ -1,0 +1,31 @@
+{
+  "name": "awenn2015/test-demo-todos",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Awenn2015\\TestDemoTodos\\": "src/",
+      "Awenn2015\\TestDemoTodos\\Data\\": "src/data",
+      "Awenn2015\\TestDemoTodos\\Models\\": "src/models",
+      "Awenn2015\\TestDemoTodos\\Services\\": "src/services",
+      "Awenn2015\\TestDemoTodos\\Controllers\\": "src/controllers"
+    },
+    "files": [
+      "includes/functions.php",
+      "includes/db_utils.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "awenn2015",
+      "email": "awenn2015@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "firebase/php-jwt": "^6.10",
+    "vlucas/phpdotenv": "^5.6",
+    "ext-pdo": "*",
+    "ext-http": "*"
+  }
+}
