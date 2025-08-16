@@ -15,7 +15,7 @@ class AuthController extends InitController {
 
     if ($check_required !== true) {
       if (!$http_referer)
-        self::send_json(400, ['error' => 'Required properties are missing in the request body']);
+        self::send_json(400, ['error' => 'В теле запроса отсутствуют обязательные свойства']);
       else {
         switch ($check_required) {
           case 'user-login':
@@ -34,7 +34,7 @@ class AuthController extends InitController {
       if ($http_referer) {
         redirect($url, ['error' => 'e1c3', 'field' => 'password', 'login' => $login]);
       } else {
-        $message = 'Invalid authorization data, the password must not contain Cyrillic characters.';
+        $message = 'Неверные данные для авторизации, пароль не должен содержать символов кириллицы.';
         self::send_json(400, ['error' => $message]);
       }
     }
@@ -53,7 +53,7 @@ class AuthController extends InitController {
       if ($http_referer) {
         redirect($url, ['error' => 'e0b7', 'field' => 'password', 'login' => $login]);
       } else {
-        self::send_json(400, ['error' => 'Incorrect authorization data']);
+        self::send_json(400, ['error' => 'Неверные данные для авторизации']);
       }
     }
 
@@ -96,7 +96,7 @@ class AuthController extends InitController {
 
     if ($check_required !== true) {
       if (!$http_referer)
-        self::send_json(400, ['error' => 'Required properties are missing in the request body']);
+        self::send_json(400, ['error' => 'В теле запроса отсутствуют обязательные свойства']);
       else {
         switch ($check_required) {
           case 'user-login':
@@ -115,31 +115,94 @@ class AuthController extends InitController {
      * ================================
      */
 
+    $email = trim($email);
+    $password = trim($password);
     $login = trim($login, " \n\r\t\v\0-_");
-    if (!preg_match('/^[\da-zA-Z_-]+$/', $login)) {
+    $repeat_password = trim($repeat_password);
+
+    if (!preg_match('/^[\da-zA-Z_-]{4,191}$/', $login)) {
       if ($http_referer) {
         redirect($url, ['error' => 'y2n5', 'field' => 'login']);
       } else {
-        self::send_json(400, ['error' => 'Incorrect authorization data']);
+        self::send_json(400, ['error' => 'Неверные данные для авторизации']);
       }
     }
 
-    $email = trim($email);
     if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
       if ($http_referer) {
-        redirect($url, ['error' => 'm7d2', 'field' => 'email']);
+        redirect($url, ['error' => 'm7d2', 'field' => 'email', 'login' => $login]);
       } else {
-        self::send_json(400, ['error' => 'Incorrect authorization data']);
+        self::send_json(400, ['error' => 'Неверные данные для авторизации']);
       }
     }
 
-    // TODO: Password
-    // TODO: Repeat password
+    if ($password !== $repeat_password) {
+      if (!$http_referer)
+        self::send_json(400, ['error' => "Пароли не совпадают"]);
+      else {
+        redirect($url, [
+          'error' => "Пароли не совпадают",
+          'field' => 'repeat-password',
+          'login' => $login,
+          'email' => $email,
+        ]);
+      }
+    }
+
+    $validate_password = self::validate_password($password, $repeat_password);
+
+    if ($validate_password !== true) {
+      if (!$http_referer)
+        self::send_json(400, ['error' => $validate_password]);
+      else {
+        redirect($url, [
+          'error' => $validate_password,
+          'field' => 'password',
+          'login' => $login,
+          'email' => $email,
+        ]);
+      }
+    }
 
     /*
      * ================================
      */
 
     self::send_json(500, ['error' => 'Not Implemented!']);
+  }
+
+  /*
+   * ===========================================
+   *             Private methods
+   * ===========================================
+   */
+
+  /**
+   * @param string $password
+   * @param string $repeat_password
+   * @return true|string
+   */
+  private static function validate_password(string $password, string $repeat_password): true|string {
+    if (strlen($password) < 8) {
+      return "Пароль должен содержать минимум 8 символов";
+    }
+
+    if (!preg_match('/[0-9]/', $password)) {
+      return "Пароль должен содержать хотя бы одну цифру";
+    }
+
+    if (!preg_match('/[a-z]/', $password)) {
+      return "Пароль должен содержать хотя бы одну строчную букву";
+    }
+
+    if (!preg_match('/[A-Z]/', $password)) {
+      return "Пароль должен содержать хотя бы одну заглавную букву";
+    }
+
+    if (!preg_match('/[^a-zA-Z0-9]/', $password)) {
+      return "Пароль должен содержать хотя бы один специальный символ";
+    }
+
+    return true;
   }
 }

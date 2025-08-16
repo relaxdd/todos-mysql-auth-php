@@ -9,7 +9,7 @@ $form_errors = [
 
 $field = $_GET['field'] ?? null;
 $error = $_GET['error'] ?? null;
-$text_errors = $form_errors[$error] ?? 'Unknown field error';
+$text_errors = $form_errors[$error] ?? ($error ?: 'Unknown field error');
 ?>
 <!doctype html>
 <html lang="<?= get_options('lang') ?>">
