@@ -4,45 +4,34 @@ namespace Awenn2015\TestDemoTodos\Controllers;
 
 use Awenn2015\TestDemoTodos\Services\JwtService;
 
-class AuthController {
+class AuthController extends InitController {
   public static function login() {
+    $url = '/auth/login';
     $http_referer = isset($_GET['http_referer']) && $_GET['http_referer'] === 'auth/login';
     $login = $_POST['user-login'] ?? null;
     $password = $_POST['user-password'] ?? null;
 
     if (!$login) {
       if ($http_referer) {
-        $url = '/auth/login';
         redirect($url, ['error' => 'e0x6', 'field' => 'login']);
       } else {
-        http_response_code(400);
-        header('Content-Type: application/json');
-        echo json_encode(['error' => 'Invalid authorization data']);
-        exit;
+        self::send_json(400, ['error' => 'Invalid authorization data']);
       }
     }
 
     if (!$password) {
       if ($http_referer) {
-        $url = '/auth/login';
         redirect($url, ['error' => 'e0x6', 'field' => 'password', 'login' => $login]);
       } else {
-        http_response_code(400);
-        header('Content-Type: application/json');
-        echo json_encode(['error' => 'Invalid authorization data']);
-        exit;
+        self::send_json(400, ['error' => 'Invalid authorization data']);
       }
     }
 
     if (preg_match('/[А-яЁё]/', $password)) {
       if ($http_referer) {
-        $url = '/auth/login';
         redirect($url, ['error' => 'e1c3', 'field' => 'password', 'login' => $login]);
       } else {
-        http_response_code(400);
-        header('Content-Type: application/json');
-        echo json_encode(['error' => 'Invalid authorization data']);
-        exit;
+        self::send_json(400, ['error' => 'Invalid authorization data']);
       }
     }
 
@@ -92,6 +81,6 @@ class AuthController {
   }
 
   public static function register() {
-    
+    self::send_json(400, ['error' => 'Not implemented']);
   }
 }

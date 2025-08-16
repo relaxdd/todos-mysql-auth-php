@@ -9,7 +9,7 @@
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<title><?= get_page_title($args['error'] ?? null); ?></title>
+<title><?= get_document_title($args['error'] ?? null); ?></title>
 
 <link rel="stylesheet" href="/assets/css/sanitize.css">
 <link rel="stylesheet" href="/assets/css/fonts.css">

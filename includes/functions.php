@@ -52,10 +52,13 @@ function get_options(string $name): string|null {
  * @param null|string $error
  * @return string
  */
-function get_page_title(?string $error = null): string {
+function get_document_title(?string $error = null): string {
+  global $load_options;
+  $title_separator = $load_options['document_title_separator'] ?? '—';
+
   $errors = [
-    '401' => '401 - Not Authorized',
-    '404' => '404 - Not Found',
+    '401' => "401 $title_separator Not Authorized",
+    '404' => "404 $title_separator Not Found",
   ];
 
   if (array_key_exists($error, $errors)) {
@@ -65,7 +68,7 @@ function get_page_title(?string $error = null): string {
   global $load_options;
   global $current_page;
 
-  return $load_options['site_title'] . ' – ' . $current_page['title'];
+  return $load_options['site_title'] . " $title_separator " . $current_page['title'];
 }
 
 /**
@@ -74,6 +77,22 @@ function get_page_title(?string $error = null): string {
 function get_current_page(): CurrentPage|null {
   global $current_page;
   return CurrentPage::init($current_page);
+}
+
+/**
+ * @return string
+ */
+function get_page_title() {
+  $page = get_current_page();
+  return $page->title;
+}
+
+/**
+ * @return string
+ */
+function get_page_content() {
+  $page = get_current_page();
+  return $page->content;
 }
 
 /**

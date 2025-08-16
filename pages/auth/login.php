@@ -22,12 +22,12 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
 
   <main>
     <div class="container">
-      <h2 class="page_title">Sign In</h2>
+      <h2 class="page_title">Login</h2>
 
       <form method="POST" action="/api/v1/auth/login?http_referer=auth%2Flogin">
         <table class="form-table">
           <tr class="form-row">
-            <td class="form-label">Login<span style="color: red;">*</span></td>
+            <td class="form-label">Login<span class="form-label--req">*</span></td>
 
             <td class="form-input">
               <div class="form-input--ceil">
@@ -45,14 +45,13 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
           </tr>
 
           <tr class="form-row">
-            <td class="form-label">Password<span style="color: red;">*</span></td>
+            <td class="form-label">Password<span class="form-label--req">*</span></td>
             <td class="form-input">
               <div class="form-input--ceil">
                 <input
                   type="password"
                   name="user-password"
                   class="form-control"
-                  value=""
                   required="">
 
                 <?php if ($error && $field === 'password') : ?>
@@ -63,10 +62,7 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
           </tr>
         </table>
 
-        <input
-          type="submit"
-          class="btn-primary"
-          value="SEND FORM">
+        <input type="submit" class="btn-primary" value="SEND">
       </form>
     </div>
   </main>

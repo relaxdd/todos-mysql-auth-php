@@ -60,4 +60,8 @@ if ($current_page['private'] && !IsAuthorized) {
   exit;
 }
 
-require ABS_PATH . '/pages/' . $current_page['file'] . '.php';
+$page_template = !empty($current_page['file']) ? trim($current_page['file']) : 'page';
+$file_pathname = ABS_PATH . '/pages/' . $page_template . '.php';
+
+if (file_exists($file_pathname)) require $file_pathname;
+else require dirname($file_pathname) . '/page.php';

@@ -6,6 +6,11 @@
   padding: 0.5rem 0.5rem 0.5rem 0;
 }
 
+.form-label--req {
+  color: red;
+  margin-left: 5px;
+}
+
 .form-input {
   padding: 0.5rem 0 0.5rem 0.5rem;
 }

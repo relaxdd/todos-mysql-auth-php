@@ -25,7 +25,7 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
   <?php require_template('html-head') ?>
 
   <link rel='stylesheet' href='/assets/css/form.css'>
-  <link rel='stylesheet' href='/assets/css/index.css'>
+  <link rel='stylesheet' href='/assets/css/todos.css'>
 </head>
 
 <body>
