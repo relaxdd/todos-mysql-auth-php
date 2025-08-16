@@ -66,6 +66,21 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
       </form>
     </div>
   </main>
+
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const keys = ['error', 'field', 'login'];
+
+      for (const key of keys) {
+        if (url.searchParams.has(key)) {
+          url.searchParams.delete(key)
+        }
+      }
+
+      window.history.pushState('', '', url);
+    })();
+  </script>
 </body>
 
 </html>

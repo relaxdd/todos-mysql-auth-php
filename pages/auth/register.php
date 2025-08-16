@@ -1,8 +1,10 @@
 <?php
 $form_errors = [
   'e0x6' => 'The field must be filled in',
-  'e0b7' => 'The authentication data was entered incorrectly',
+  'm7d2' => 'Invalid email address has been entered',
   'e1c3' => 'The password contains cyrillic characters',
+  'e0b7' => 'The authentication data was entered incorrectly',
+  'y2n5' => 'Invalid login is specified, login can contain only letters, numbers, dashes and underscores.',
 ];
 
 $field = $_GET['field'] ?? null;
@@ -70,8 +72,7 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
                   type="password"
                   name="user-password"
                   class="form-control"
-                  autocomplete="new-password"
-                  required="">
+                  autocomplete="new-password">
 
                 <?php if ($error && $field === 'password') : ?>
                   <small style="color: red;"><?= $text_errors ?></small>
@@ -88,8 +89,7 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
                   type="password"
                   name="repeat-password"
                   class="form-control"
-                  autocomplete="new-password"
-                  required="">
+                  autocomplete="new-password">
 
                 <?php if ($error && $field === 'repeat-password') : ?>
                   <small style="color: red;"><?= $text_errors ?></small>
@@ -103,6 +103,21 @@ $text_errors = $form_errors[$error] ?? 'Unknown field error';
       </form>
     </div>
   </main>
+
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const keys = ['error', 'field', 'login', 'email'];
+
+      for (const key of keys) {
+        if (url.searchParams.has(key)) {
+          url.searchParams.delete(key)
+        }
+      }
+
+      window.history.pushState('', '', url);
+    })();
+  </script>
 </body>
 
 </html>
